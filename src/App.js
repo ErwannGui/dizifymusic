@@ -13,7 +13,7 @@ function App() {
     return (
         <div className="App">
             <Header/>
-            <main>
+            <main className="section">
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <PrivateRoute
