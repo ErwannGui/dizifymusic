@@ -3,9 +3,9 @@ import React from "react";
 class Admin extends React.Component {
     render() {
         return (
-            <div className="testAdmin">
+            <section className="admin">
 
-            </div>
+            </section>
         );
     }
 }
