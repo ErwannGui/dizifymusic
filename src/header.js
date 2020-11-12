@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Login from './login'
+import Admin from './admin'
+import PrivateRoute from './private-route'
+import {fakeAuth} from './fakeAuth'
 
 export default class Header extends PureComponent {
     constructor(props) {
@@ -26,8 +30,8 @@ export default class Header extends PureComponent {
     render() {
         const { open } = this.state;
         return (
-            <div>
-                <Router>
+            <Router>
+                <header>
                     <nav className="navbar" role="navigation" aria-label="main navigation">
                         <div className="wrapper">
                             <div className="navbar-brand">
@@ -50,8 +54,8 @@ export default class Header extends PureComponent {
                                 </button>
                             </div>
                             <div className={`navbar-menu ${open ? 'is-active' : ''}`}>
-                                <Link className="navbar-item" to="/home" onClick={() => this.closeMenuBar()}>
-                                    Home
+                                <Link className="navbar-item" to="/admin" onClick={() => this.closeMenuBar()}>
+                                    Admin
                                 </Link>
                             </div>
                             <div className="navbar-end">
@@ -71,19 +75,25 @@ export default class Header extends PureComponent {
                                 </div>
                                 <div className="navbar-item">
                                     <div className="buttons">
-                                        <a className="button is-primary">
+                                        <a className="button is-primary is-disabled">
                                             <strong>Sign up</strong>
                                         </a>
-                                        <a className="button is-light">
+                                        <Link to="/login" className="button is-light">
                                             Log in
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </nav>
-                </Router>
-            </div>
+                    <Route path="/login" exact component={Login} />
+                    <PrivateRoute
+                        path="/admin"
+                        component={Admin}
+                        isAuthenticated={fakeAuth.isAuthenticated}
+                    />
+                </header>
+            </Router>
         );
     }
 }

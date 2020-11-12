@@ -22,9 +22,6 @@ function App() {
         </a>
       </header>*/}
       <Header/>
-      <main>
-
-      </main>
     </div>
   );
 }
