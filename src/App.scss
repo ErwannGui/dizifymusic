@@ -1,0 +1,39 @@
+@import './_imports.sass';
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1 0 auto;
+  background: #3C3C3C;
+}
+
+.navbar {
+  background: #2E2E2E;
+
+  &> .wrapper {
+    align-items: stretch;
+    display: flex;
+    min-height: 3.25rem;
+    flex-grow: 1;
+
+    .navbar-item {
+      color: #f7f7f7;
+
+      &:not(.home):hover {
+        color: #363636;
+      }
+    }
+
+    .navbar-end .searchbar .button {
+      background: transparent!important;
+
+      span {
+        color: #f7f7f7;
+      }
+    }
+  }
+}
