@@ -24,7 +24,7 @@ class AlbumDetails extends React.Component {
                                     <td>Titre 1</td>
                                     <td className="is-icon">
                                         <a href="#">
-                                            <i className="fas fa-stars"/>
+                                            <i className="fas fa-star"/>
                                         </a>
                                     </td>
                                 </tr>
@@ -33,7 +33,7 @@ class AlbumDetails extends React.Component {
                                     <td>Titre 2</td>
                                     <td className="is-icon">
                                         <a href="#">
-                                            <i className="fas fa-stars"/>
+                                            <i className="fas fa-star"/>
                                         </a>
                                     </td>
                                 </tr>

@@ -28,7 +28,7 @@ export default class Header extends PureComponent {
         const { open } = this.state;
         return (
             <header>
-                <nav className="navbar" role="navigation" aria-label="main navigation">
+                <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
                     <div className="wrapper">
                         <div className="navbar-brand">
                             <Link to="/" className="navbar-item home"><strong>DizifyMusic</strong></Link>
