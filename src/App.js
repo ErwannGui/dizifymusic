@@ -9,6 +9,8 @@ import {fakeAuth} from "./fakeAuth";
 import {Route, Switch} from "react-router-dom";
 import Home from "./home";
 import Profile from "./profile";
+import ArtisteDetails from "./artiste_details";
+import AlbumDetails from "./album_details";
 
 function App() {
     return (
@@ -48,6 +50,8 @@ function App() {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/profile" exact component={Profile} />
+                    <Route path="/album_details" exact component={AlbumDetails} />
+                    <Route path="/artiste_details" exact component={ArtisteDetails} />
                     <PrivateRoute
                         path="/admin"
                         component={Admin}

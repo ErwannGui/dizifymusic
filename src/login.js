@@ -37,10 +37,10 @@ export default class Login extends React.Component {
                             <div className="control has-icons-left has-icons-right">
                                 <input className="input" name="email" type="email" placeholder="Email address"/>
                                 <span className="icon is-small is-left">
-                                    <i className="fas fa-envelope"></i>
+                                    <i className="fas fa-envelope"/>
                                 </span>
                                 <span className="icon is-small is-right">
-                                    <i className="fas fa-check"></i>
+                                    <i className="fas fa-check"/>
                                 </span>
                             </div>
                         </div>
@@ -49,7 +49,7 @@ export default class Login extends React.Component {
                             <div className="control has-icons-left has-icons-right">
                                 <input className="input" type="password" name="password"/>
                                 <span className="icon is-small is-left">
-                                  <i className="fas fa-key"></i>
+                                  <i className="fas fa-key"/>
                                 </span>
                             </div>
                         </div>

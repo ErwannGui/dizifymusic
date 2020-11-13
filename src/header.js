@@ -66,7 +66,7 @@ export default class Header extends PureComponent {
                                     <div className="control">
                                         <a className="button">
                                             <span className="icon is-small is-right">
-                                              <i className="fas fa-search"></i>
+                                              <i className="fas fa-search"/>
                                             </span>
                                         </a>
                                     </div>
