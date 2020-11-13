@@ -14,6 +14,36 @@ function App() {
     return (
         <div className="App">
             <Header/>
+            <aside className="menu">
+                <p className="menu-label">
+                    General
+                </p>
+                <ul className="menu-list">
+                    <li><a>Dashboard</a></li>
+                    <li><a>Playlist</a></li>
+                    <li><a>Favoris</a></li>
+                </ul>
+                <p className="menu-label">
+                    Administration
+                </p>
+                <ul className="menu-list">
+                    <li><a>Utilisateurs</a></li>
+                    <li>
+                        <ul>
+                            <li><a>Liste des membres</a></li>
+                            <li><a>Ajouter un utilisateur</a></li>
+                        </ul>
+                    </li>
+                    <li><a>Donnes</a></li>
+                    <li>
+                        <ul>
+                            <li><a>Titres</a></li>
+                            <li><a>Artistes</a></li>
+                            <li><a>Albums</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </aside>
             <main className="section">
                 <Switch>
                     <Route path="/" exact component={Home} />
