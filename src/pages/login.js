@@ -1,11 +1,14 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {fakeAuth} from './fakeAuth'
+import {fakeAuth} from '../fakeAuth'
 
 export default class Login extends React.Component {
-    state = {
-        connected: false
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            connected: false
+        };
+    }
 
     login = () => {
         fakeAuth.authenticate(() => {
@@ -21,7 +24,7 @@ export default class Login extends React.Component {
 
         if (connected) {
             return (
-                <Redirect to="/admin"/>
+                <Redirect to={from}/>
             )
         }
 

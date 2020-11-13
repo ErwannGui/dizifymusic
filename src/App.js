@@ -1,16 +1,18 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.scss';
 import './App.css';
 import Header from './header';
 import React from "react";
 import PrivateRoute from "./private-route";
-import Admin from "./admin";
+import Admin from "./pages/admin";
 import {fakeAuth} from "./fakeAuth";
-import {Route, Switch} from "react-router-dom";
-import Home from "./home";
-import Profile from "./profile";
-import ArtisteDetails from "./artiste_details";
-import AlbumDetails from "./album_details";
+import {Link, Route, Switch} from "react-router-dom";
+import Home from "./pages/home";
+import Profile from "./pages/profile";
+import Search from "./pages/search";
+
+import ArtisteDetails from "./pages/artiste_details";
+import AlbumDetails from "./pages/album_details";
 
 function App() {
     return (
@@ -21,27 +23,27 @@ function App() {
                     General
                 </p>
                 <ul className="menu-list">
-                    <li><a>Dashboard</a></li>
-                    <li><a>Playlist</a></li>
-                    <li><a>Favoris</a></li>
+                    <li><Link to="/">Dashboard</Link></li>
+                    <li><Link to="/playlist">Playlist</Link></li>
+                    <li><Link to="/favorite">Favoris</Link></li>
                 </ul>
                 <p className="menu-label">
                     Administration
                 </p>
                 <ul className="menu-list">
-                    <li><a>Utilisateurs</a></li>
+                    <li><Link to="/admin/users">Utilisateurs</Link></li>
                     <li>
                         <ul>
-                            <li><a>Liste des membres</a></li>
-                            <li><a>Ajouter un utilisateur</a></li>
+                            <li><Link to="/admin/users">Liste des membres</Link></li>
+                            <li><Link to="/admin/users#addUser">Ajouter un utilisateur</Link></li>
                         </ul>
                     </li>
-                    <li><a>Donnes</a></li>
+                    <li><Link to="/admin">Donnes</Link></li>
                     <li>
                         <ul>
-                            <li><a>Titres</a></li>
-                            <li><a>Artistes</a></li>
-                            <li><a>Albums</a></li>
+                            <li><Link to="/admin/songs">Titres</Link></li>
+                            <li><Link to="/admin/artists">Artistes</Link></li>
+                            <li><Link to="/admin/albums">Albums</Link></li>
                         </ul>
                     </li>
                 </ul>
@@ -49,6 +51,7 @@ function App() {
             <main className="section">
                 <Switch>
                     <Route path="/" exact component={Home} />
+                    <Route path="/search" component={Search} />
                     <Route path="/profile" exact component={Profile} />
                     <Route path="/album_details" exact component={AlbumDetails} />
                     <Route path="/artiste_details" exact component={ArtisteDetails} />

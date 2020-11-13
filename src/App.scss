@@ -44,7 +44,7 @@ aside.menu {
   position: fixed;
   top: 56px;
   height: calc(100% - 56px);
-  padding: 10px 0;
+  padding: 10px;
 }
 
 main {
@@ -52,7 +52,7 @@ main {
   max-width: 100%;
   /*height: 100%;*/
   right: 0;
-  top: 56px;
+  top: 46px;
   width: calc(100% - 240px);
 }
 
@@ -61,6 +61,25 @@ main {
   max-width: 60%;
   margin: 40px auto;
 }
+
+//=============================================//
+//                  Search                     //
+//=============================================//
+
+.search {
+  h1 {
+    margin-bottom: 15px;
+  }
+
+  form {
+    margin: 10px auto;
+
+    .field .control:first-of-type {
+      width: 100%;
+    }
+  }
+}
+
 
 //=============================================//
 //                  Profile                    //

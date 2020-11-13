@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Login from './login'
+import { Route, Link } from 'react-router-dom';
+import Login from './pages/login'
 
 export default class Header extends PureComponent {
     constructor(props) {
@@ -59,18 +59,20 @@ export default class Header extends PureComponent {
                         </div>
                         <div className="navbar-end">
                             <div className="navbar-item">
-                                <div className="field has-addons searchbar">
-                                    <div className="control">
-                                        <input className="input" type="text" placeholder="Search an artist or a song"/>
+                                <form action="/search">
+                                    <div className="field has-addons searchbar">
+                                        <div className="control">
+                                            <input className="input" type="text" name="q" placeholder="Search an artist or a song"/>
+                                        </div>
+                                        <div className="control">
+                                            <button type="submit" className="button">
+                                                <span className="icon is-small is-right">
+                                                  <i className="fas fa-search"></i>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="control">
-                                        <a className="button">
-                                            <span className="icon is-small is-right">
-                                              <i className="fas fa-search"/>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                             <div className="navbar-item">
                                 <div className="buttons">

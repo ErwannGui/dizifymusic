@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "./tables";
+import Table from "../components/tables";
 
 class Admin extends React.Component {
     render() {
