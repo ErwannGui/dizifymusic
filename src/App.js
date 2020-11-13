@@ -11,8 +11,8 @@ import Home from "./pages/home";
 import Profile from "./pages/profile";
 import Search from "./pages/search";
 
-import ArtisteDetails from "./pages/artiste_details";
-import AlbumDetails from "./pages/album_details";
+import ArtistDetails from "./pages/artistDetails";
+import AlbumDetails from "./pages/albumDetails";
 
 function App() {
     return (
@@ -38,7 +38,7 @@ function App() {
                             <li><Link to="/admin/users#addUser">Ajouter un utilisateur</Link></li>
                         </ul>
                     </li>
-                    <li><Link to="/admin">Donnes</Link></li>
+                    <li><Link to="/admin">Données</Link></li>
                     <li>
                         <ul>
                             <li><Link to="/admin/songs">Titres</Link></li>
@@ -53,8 +53,8 @@ function App() {
                     <Route path="/" exact component={Home} />
                     <Route path="/search" component={Search} />
                     <Route path="/profile" exact component={Profile} />
-                    <Route path="/album_details" exact component={AlbumDetails} />
-                    <Route path="/artiste_details" exact component={ArtisteDetails} />
+                    <Route path="/album/:id" exact component={AlbumDetails} />
+                    <Route path="/artist/:id" exact component={ArtistDetails} />
                     <PrivateRoute
                         path="/admin"
                         component={Admin}

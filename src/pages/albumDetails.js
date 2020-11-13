@@ -1,9 +1,17 @@
 import React from "react";
 
 class AlbumDetails extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.match.params.id,
+            data: this.props.albumData || {}
+        }
+    }
+
     render() {
         return (
-            <div className="album_details">
+            <div className="albumDetails">
                 <section className="panel">
                     <p className="panel-heading">
                         Album name

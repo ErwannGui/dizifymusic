@@ -1,9 +1,17 @@
 import React from "react";
 
-class ArtisteDetails extends React.Component {
+class ArtistDetails extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.match.params.id,
+            data: this.props.artistData || {}
+        }
+    }
+
     render() {
         return (
-            <div>
+            <div className="artistDetails">
                 <p className="panel-heading">
                     Artiste name
                 </p>
@@ -169,4 +177,4 @@ class ArtisteDetails extends React.Component {
     }
 }
 
-export default ArtisteDetails
+export default ArtistDetails

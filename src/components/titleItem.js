@@ -13,7 +13,7 @@ export default class TitleItem extends React.Component {
         return (
             <tr>
                 <td>
-                    <span className="icon is-small">
+                    <span className="icon is-small" onClick={() => {data.isFavorite = true}}>
                         <i className={data.isFavorite ? 'fas fa-star' : 'far fa-star'}/>
                     </span>
                 </td>

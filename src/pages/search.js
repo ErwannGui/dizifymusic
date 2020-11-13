@@ -1,12 +1,15 @@
 import React from "react";
 import Carousel from 'react-elastic-carousel';
 import TitleItem from "../components/titleItem";
+import ArtistItem from "../components/artistItem";
+import {Link} from "react-router-dom";
+import AlbumItem from "../components/albumItem";
 
 const breakPoints = [
     { width: 1, itemsToShow: 1 },
     { width: 550, itemsToShow: 2, itemsToScroll: 1 },
     { width: 768, itemsToShow: 3, itemsToScroll: 1 },
-    { width: 1200, itemsToShow: 6, itemsToScroll: 1 }
+    { width: 1200, itemsToShow: 4, itemsToScroll: 1 }
 ];
 
 class Search extends React.Component {
@@ -76,8 +79,85 @@ class Search extends React.Component {
                 isFavorite: false
             },
         ];
-        result['artists'] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        result['playlists'] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        result['artists'] = [
+            {
+                id: 1,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 2,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 3,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 4,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 5,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 6,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 7,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 8,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+            {
+                id: 9,
+                uuid: "djmiiiks",
+                name: "DJ Miiicks",
+                image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
+                description: "Lorem ipsum dolor sit amet et blablabla ...",
+            },
+        ];
+        result['albums'] = [
+            {
+                id: 1,
+            },
+            {
+                id: 2,
+            },
+            {
+                id: 3,
+            },
+            {
+                id: 4,
+            },
+        ];
         result[0] = 'test';
         return result;
     }
@@ -122,7 +202,7 @@ class Search extends React.Component {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {res['titles'].map((item) => <TitleItem songData={item}/>)}
+                                    {res['titles'].map((item) => <TitleItem key={item.id} songData={item}/>)}
                                 </tbody>
                             </table>
                         </div>
@@ -133,15 +213,15 @@ class Search extends React.Component {
                                 <h2 className="is-size-5 has-text-white">Artists</h2>
                                 <br/>
                                 <Carousel breakPoints={breakPoints}>
-                                    {res['artists'].map((item) => <div className="card has-text-centered" key={item}>{item}</div>)}
+                                    {res['artists'].map((item) => <Link to={"/artist/" + item.id} className="card-link"><ArtistItem key={item.id} artistData={item}/></Link>)}
                                 </Carousel>
                             </div>
                             }
-                            {res['playlists'].length > 0 &&
-                            <div className="playlists">
-                                <h2 className="is-size-5 has-text-white">Playlists</h2>
+                            {res['albums'].length > 0 &&
+                            <div className="albums">
+                                <h2 className="is-size-5 has-text-white">Albums</h2>
                                 <Carousel breakPoints={breakPoints}>
-                                    {res['playlists'].map((item) => <div className="card has-text-centered" key={item}>{item}</div>)}
+                                    {res['albums'].map((item) => <Link to={"/album/" + item.id} className="card-link"><AlbumItem key={item.id} albumData={item}/></Link>)}
                                 </Carousel>
                             </div>
                             }
