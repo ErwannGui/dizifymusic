@@ -1,4 +1,7 @@
 import React from 'react';
+import {favorites} from "../store/favorites";
+import {API_URL} from "../api";
+import {fakeAuth} from "../fakeAuth";
 
 export default class TitleItem extends React.Component {
     constructor(props) {
@@ -8,19 +11,56 @@ export default class TitleItem extends React.Component {
         };
     }
 
+    isConnected() {
+        return fakeAuth.isAuthenticated;
+    }
+
+    addToFavorites(item) {
+        favorites.addTitle(item);
+        fetch(API_URL + `favoris/${favorites.getId()}`, {
+            "method": "PUT",
+            "headers": {
+                "content-type": "application/json",
+                "accept": "application/json"
+            },
+            "body": {
+                "favorisIn": favorites.format()
+            }
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     render() {
         const { data } = this.state;
         return (
             <tr>
                 <td>
-                    <span className="icon is-small" onClick={() => {data.isFavorite = true}}>
-                        <i className={data.isFavorite ? 'fas fa-star' : 'far fa-star'}/>
+                    {this.isConnected() &&
+                    <span className="icon is-small" onClick={() => this.addToFavorites(data)}>
+                        <i className={favorites.isFavoriteTitle(data.id_titre) ? 'fas fa-star' : 'far fa-star'}/>
                     </span>
+                    }
                 </td>
-                <td>{data.title}</td>
-                <td>{data.artist}</td>
-                <td>{data.album}</td>
-                <td>{data.date}</td>
+                <td>{data.nom}</td>
+                <td>
+                    {data.album.artiste ?
+                        (data.album.artiste.nom)
+                        : (data.artist)
+                    }
+                </td>
+                <td>
+                    {data.album ?
+                        (data.album.nom)
+                        : (data.album)
+                    }
+                </td>
+                <td>{data.duree}</td>
             </tr>
         )
     }

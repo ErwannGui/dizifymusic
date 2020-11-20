@@ -40,42 +40,42 @@ class Search extends React.Component {
         result['titles'] = [
             {
                 id: 1,
-                title: 'Song #001',
+                nom: 'Song #001',
                 artist: 'DJ Miiicks',
                 album: 'Freestyle',
-                date: '13/11/2020',
+                duree: '13/11/2020',
                 isFavorite: true
             },
             {
                 id: 2,
-                title: 'Song #002',
+                nom: 'Song #002',
                 artist: 'DJ Miiicks',
                 album: 'Freestyle',
-                date: '13/11/2020',
+                duree: '13/11/2020',
                 isFavorite: false
             },
             {
                 id: 3,
-                title: 'Song #003',
+                nom: 'Song #003',
                 artist: 'DJ Miiicks',
                 album: 'Freestyle',
-                date: '13/11/2020',
+                duree: '13/11/2020',
                 isFavorite: false
             },
             {
                 id: 4,
-                title: 'Song #004',
+                nom: 'Song #004',
                 artist: 'DJ Miiicks',
                 album: 'Freestyle',
-                date: '13/11/2020',
+                duree: '13/11/2020',
                 isFavorite: true
             },
             {
                 id: 5,
-                title: 'Song #005',
+                nom: 'Song #005',
                 artist: 'DJ Miiicks',
                 album: 'Freestyle',
-                date: '13/11/2020',
+                duree: '13/11/2020',
                 isFavorite: false
             },
         ];
@@ -83,63 +83,63 @@ class Search extends React.Component {
             {
                 id: 1,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 2,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 3,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 4,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 5,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 6,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 7,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 8,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
             {
                 id: 9,
                 uuid: "djmiiiks",
-                name: "DJ Miiicks",
+                nom: "DJ Miiicks",
                 image: "https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg",
                 description: "Lorem ipsum dolor sit amet et blablabla ...",
             },
@@ -147,15 +147,19 @@ class Search extends React.Component {
         result['albums'] = [
             {
                 id: 1,
+                nom: 'Test',
             },
             {
                 id: 2,
+                nom: 'Test'
             },
             {
                 id: 3,
+                nom: 'Test'
             },
             {
                 id: 4,
+                nom: 'Test'
             },
         ];
         result[0] = 'test';
@@ -168,7 +172,7 @@ class Search extends React.Component {
 
         return (
             <section className="search">
-                <h1 className="has-text-white is-size-4">Recherche</h1>
+                <h1 className="has-text-white is-size-4">Recherche/Rich GAB</h1>
                 <form action="/search">
                     <div className="field has-addons searchbar">
                         <div className="control">
@@ -198,7 +202,7 @@ class Search extends React.Component {
                                     <th>Titre</th>
                                     <th>Artiste</th>
                                     <th>Album</th>
-                                    <th>Date</th>
+                                    <th>Duréee</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -213,15 +217,16 @@ class Search extends React.Component {
                                 <h2 className="is-size-5 has-text-white">Artists</h2>
                                 <br/>
                                 <Carousel breakPoints={breakPoints}>
-                                    {res['artists'].map((item) => <Link to={"/artist/" + item.id} className="card-link"><ArtistItem key={item.id} artistData={item}/></Link>)}
+                                    {res['artists'].map((item) => <Link to={"/artist/" + item.id} key={item.id} className="card-link"><ArtistItem artistData={item}/></Link>)}
                                 </Carousel>
                             </div>
                             }
                             {res['albums'].length > 0 &&
                             <div className="albums">
                                 <h2 className="is-size-5 has-text-white">Albums</h2>
+                                <br/>
                                 <Carousel breakPoints={breakPoints}>
-                                    {res['albums'].map((item) => <Link to={"/album/" + item.id} className="card-link"><AlbumItem key={item.id} albumData={item}/></Link>)}
+                                    {res['albums'].map((item) => <Link to={"/album/" + item.id} key={item.id} className="card-link"><AlbumItem albumData={item}/></Link>)}
                                 </Carousel>
                             </div>
                             }

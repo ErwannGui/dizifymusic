@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Route, Link } from 'react-router-dom';
-import Login from './pages/login'
+import { Link } from 'react-router-dom';
 
 export default class Header extends PureComponent {
     constructor(props) {
@@ -87,7 +86,6 @@ export default class Header extends PureComponent {
                         </div>
                     </div>
                 </nav>
-                <Route path="/login" exact component={Login} />
             </header>
         );
     }

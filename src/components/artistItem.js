@@ -10,11 +10,16 @@ export default class ArtistItem extends React.Component {
 
     render() {
         const { data } = this.state;
+
         return (
             <div className="card">
                 <div className="card-image">
                     <figure className="image is-4by3">
+                        {data && data.image !== "string" ? (
                         <img src={data.image} alt="Placeholder image"/>
+                        ) : (
+                            <img src="https://dj-network.com/wp-content/uploads/2019/09/formation_dj_producteur_ecole_dj_network-1259x1259.jpg" alt="Placeholder image"/>
+                        )}
                     </figure>
                 </div>
                 <div className="card-content">
@@ -25,16 +30,15 @@ export default class ArtistItem extends React.Component {
                             </figure>
                         </div>
                         <div className="media-content">
-                            <p className="title is-4">{data.name}</p>
-                            <p className="subtitle is-6">{data.uuid}</p>
+                            <p className="title is-4">{data.nom}</p>
+                            {/*<p className="subtitle is-6">{data.uuid}</p>*/}
                         </div>
                     </div>
 
                     <div className="content">
-                        {data.description} <a>@festival</a>. <br/>
-                        <a href="#">#r&b</a> <a href="#">#hiphop</a>
-                        <br/>
-                            <time dateTime="2020-11-1">11:09 PM - 1 Nov 2020</time>
+                        {data.description &&
+                            <p>{data.description}.</p>
+                        }
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  background: #3C3C3C;
 }
 
 #root {
@@ -54,12 +55,53 @@ main {
   right: 0;
   top: 46px;
   width: calc(100% - 240px);
+  background: #3C3C3C;
+}
+
+.title {
+  text-transform: capitalize;
 }
 
 .login .card {
   padding: 40px;
   max-width: 60%;
   margin: 40px auto;
+}
+
+.card-link {
+  width: 100%;
+  position: relative;
+
+  .album-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  span {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+  }
+}
+
+table.table {
+  margin-bottom: 15px;
+  color: #f7f7f7;
+  background: #191919;
+
+  thead {
+    background: #2E2E2E;
+
+    th {
+      color: #7d7d7d;
+    }
+  }
+
+  tr:hover td {
+    color: #191919;
+  }
 }
 
 //=============================================//
@@ -79,42 +121,24 @@ main {
     }
   }
 
-  .wrapper .card-link {
-    width: 100%;
-    position: relative;
-
-    .album-title {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-
   .wrapper .card {
     width: calc(100% - 30px);
     margin: 15px;
   }
-
-  .wrapper table {
-    margin-bottom: 15px;
-    color: #f7f7f7;
-    background: #191919;
-
-    thead {
-      background: #2E2E2E;
-
-      th {
-        color: #7d7d7d;
-      }
-    }
-
-    tr:hover td {
-      color: #191919;
-    }
-  }
 }
 
+
+//=============================================//
+//                    Home                     //
+//=============================================//
+
+.homepage {
+  .card-link {
+    min-width: 140px;
+    max-width: 30%;
+    margin: 15px auto;
+  }
+}
 
 //=============================================//
 //                  Profile                    //
@@ -122,4 +146,31 @@ main {
 
 .avatar_card {
   justify-content: center;
+}
+
+//=============================================//
+//                View Details                 //
+//=============================================//
+
+.artistDetails {
+  .panel-heading .icon {
+    float: right;
+    margin-top: 5px;
+  }
+
+  .album {
+    flex: 1 0 30%;
+    max-width: 30%;
+
+    .media-content .icon {
+      float: right;
+    }
+  }
+}
+
+.albumDetails {
+  .panel-heading .icon {
+    float: right;
+    margin-top: 5px;
+  }
 }

@@ -6,7 +6,8 @@ const userSlice = createSlice({
         fullName: null,
         token: 'XX-TOKEN-XX',
         rights: null,
-        avatar: null
+        avatar: null,
+        favorites: null
     },
     reducers: {
         setName: state => {
@@ -24,6 +25,9 @@ const userSlice = createSlice({
         },
         setAvatar: state => {
             state.avatar = ''
+        },
+        setFavorites: state => {
+            state.favorites = {}
         }
     }
 });
@@ -41,3 +45,5 @@ store.subscribe(() => console.log(store.getState()));
 store.dispatch(setName());
 store.dispatch(setToken());
 store.dispatch(setRights());
+
+// Pas eu le temps d'approfondir ce code pour avoir un store propre, on a fait au plus vite

@@ -13,8 +13,15 @@ import Search from "./pages/search";
 
 import ArtistDetails from "./pages/artistDetails";
 import AlbumDetails from "./pages/albumDetails";
+import Login from "./pages/login";
+
+/*function isConnected() {
+    return fakeAuth.isAuthenticated;
+}*/
 
 function App() {
+    const isConnected = fakeAuth.isAuthenticated;
+    console.log(isConnected); // ...
     return (
         <div className="App">
             <Header/>
@@ -24,8 +31,12 @@ function App() {
                 </p>
                 <ul className="menu-list">
                     <li><Link to="/">Dashboard</Link></li>
-                    <li><Link to="/playlist">Playlist</Link></li>
-                    <li><Link to="/favorite">Favoris</Link></li>
+                    {isConnected &&
+                        <li><Link to="/playlist">Playlist</Link></li>
+                    }
+                    {isConnected &&
+                        <li><Link to="/favorite">Favoris</Link></li>
+                    }
                 </ul>
                 <p className="menu-label">
                     Administration
@@ -52,13 +63,14 @@ function App() {
                 <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/search" component={Search} />
+                    <Route path="/login" exact component={Login} />
                     <Route path="/profile" exact component={Profile} />
                     <Route path="/album/:id" exact component={AlbumDetails} />
                     <Route path="/artist/:id" exact component={ArtistDetails} />
                     <PrivateRoute
                         path="/admin"
                         component={Admin}
-                        isAuthenticated={fakeAuth.isAuthenticated}
+                        isAuthenticated={isConnected}
                     />
                 </Switch>
             </main>
