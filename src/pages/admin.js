@@ -3,6 +3,17 @@ import Table from "../components/tables";
 import TitleItem from "../components/titleItem";
 import {API_URL} from "../api";
 
+/*const Edit = (props) => {
+    const { editable, id } = props;
+    return (
+        <a onClick={() => toggleEdition(id)}>
+            <span className="icon is-small">
+                <i className={editable ? "fas fa-check" : "fas fa-edit"} aria-hidden="true"></i>
+            </span>
+        </a>
+    )
+}*/
+
 class Admin extends React.Component {
     constructor(props) {
         super(props);
@@ -12,8 +23,10 @@ class Admin extends React.Component {
             edition: 0,
             columns: [],
             data: [],
-            modal_class: ""
+            modal_class: "",
+            isFetching: false
         }
+        this.toggleEdition.bind(this);
     }
 
     async componentDidMount() {
@@ -23,30 +36,40 @@ class Admin extends React.Component {
     changeTab(index) {
         switch(index) {
             case 1:
-                this.getArtists();
+                this.getArtists(() => {
+                    this.setState({
+                        currentTab: index
+                    });
+                });
                 break;
             case 2:
-                this.getTitles();
+                this.getTitles(() => {
+                    this.setState({
+                        currentTab: index
+                    });
+                });
                 break;
             case 3:
-                this.getAlbums();
-                break;
-            case 4:
-                this.getUsers();
+                this.getAlbums(() => {
+                    this.setState({
+                        currentTab: index
+                    });
+                });
                 break;
             default:
-                this.getArtists();
+                this.getArtists(() => {
+                    this.setState({
+                        currentTab: index
+                    });
+                });
                 break;
         }
-
-        setTimeout(() => {
-            this.setState({
-                currentTab: index
-            });
-        }, 500)
     }
 
-    getArtists() {
+    getArtists(callback) {
+        this.setState({
+            isFetching: true
+        });
         fetch(API_URL + 'artistes', {
             "method": "GET",
         })
@@ -57,15 +80,21 @@ class Admin extends React.Component {
                 this.setState({
                     type: 'artistes',
                     columns: headers,
-                    data: response
-                })
+                    data: response,
+                    isFetching: false
+                });
+                if (callback)
+                    setTimeout(callback)
             })
             .catch(err => {
                 console.log(err);
             });
     }
 
-    getTitles() {
+    getTitles(callback) {
+        this.setState({
+            isFetching: true
+        });
         fetch(API_URL + 'titres', {
             "method": "GET",
         })
@@ -76,15 +105,21 @@ class Admin extends React.Component {
                 this.setState({
                     type: 'titres',
                     columns: headers,
-                    data: response
-                })
+                    data: response,
+                    isFetching: false
+                });
+                if (callback)
+                    setTimeout(callback)
             })
             .catch(err => {
                 console.log(err);
             });
     }
 
-    getAlbums() {
+    getAlbums(callback) {
+        this.setState({
+            isFetching: true
+        });
         fetch(API_URL + 'albums', {
             "method": "GET",
         })
@@ -95,27 +130,11 @@ class Admin extends React.Component {
                 this.setState({
                     type: 'albums',
                     columns: headers,
-                    data: response
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    getUsers() {
-        fetch(API_URL + 'utilisateurs', {
-            "method": "GET",
-        })
-            .then(response => response.json())
-            .then(response => {
-                let headers = Object.keys(response[0]);
-                console.log(headers);
-                this.setState({
-                    type: 'utilisateurs',
-                    columns: headers,
-                    data: response
-                })
+                    data: response,
+                    isFetching: false
+                });
+                if (callback)
+                    setTimeout(callback)
             })
             .catch(err => {
                 console.log(err);
@@ -128,11 +147,17 @@ class Admin extends React.Component {
         })
     }
 
+    isEditable() {
+        setTimeout(() => {
+            console.log(this.state.edition);
+            return this.state.edition
+        }, 300)
+    }
+
     delete(type, id) {
         fetch(API_URL + type + `/${id}`, {
             "method": "DELETE",
         })
-            .then(response => response.json())
             .then(response => {
                 console.log(response);
             })
@@ -141,16 +166,19 @@ class Admin extends React.Component {
             });
     }
 
-    edit(e, type, id) {
+    edit(e, type) {
         e.preventDefault();
+        this.toggleEdition(0);
+        let id = null;
         let body = {};
         switch(type) {
             case 'artistes':
-                body = {
+                body = JSON.stringify({
                     [e.target[1].name]: e.target[1].value,
                     [e.target[2].name]: e.target[2].value
-                }
-                body = JSON.stringify(body);
+                });
+                id = e.target[3].attributes[1].value;
+                console.log(id);
                 break;
             case 'titres':
                 body = JSON.stringify({
@@ -158,9 +186,21 @@ class Admin extends React.Component {
                     [e.target[2].name]: e.target[2].value,
                     [e.target[3].name]: e.target[3].value
                 });
+                id = e.target[4].attributes[1].value;
+                console.log(id);
+                break;
+            case 'albums':
+                body = JSON.stringify({
+                    [e.target[1].name]: e.target[1].value,
+                    [e.target[2].name]: e.target[2].value,
+                    [e.target[3].name]: e.target[3].value,
+                    [e.target[4].name]: e.target[4].value
+                });
+                id = e.target[5].attributes[1].value;
+                console.log(id);
                 break;
         }
-        fetch(API_URL + type + `${id}`, {
+        fetch(API_URL + type + `/${id}`, {
             "method": "PUT",
             "headers": {
                 "content-type": "application/json",
@@ -168,9 +208,19 @@ class Admin extends React.Component {
             },
             "body": body
         })
-            .then(response => response.json())
             .then(response => {
                 console.log(response);
+                switch(type) {
+                    case 'artistes':
+                        this.getArtists();
+                        break;
+                    case 'titres':
+                        this.getTitles();
+                        break;
+                    case 'albums':
+                        this.getAlbums();
+                        break;
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -215,19 +265,12 @@ class Admin extends React.Component {
                                 <span>Albums</span>
                             </a>
                         </li>
-                        <li className={this.state.currentTab === 4 ? 'is-active' : ''} onClick={() => this.changeTab(4)}>
-                            <a>
-                                <span className="icon is-small">
-                                    <i className="fas fa-user" aria-hidden="true"></i>
-                                </span>
-                                <span>Utilisateurs</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 {/*<Table />*/}
                 <div className="table-container">
                     <form onSubmit={(e) => this.edit(e,  this.state.type)}>
+                    {!this.state.isFetching &&
                     <table className="table is-fullwidth is-hoverable" style={{textAlign: 'center'}}>
                         <thead>
                         <tr>
@@ -237,90 +280,164 @@ class Admin extends React.Component {
                         </thead>
                         <tbody>
                         {this.state.currentTab === 1 &&
-                            this.state.data.map((item, index) =>
-                                <tr key={index}>
-                                    <td>
-                                        <input className="input" name={this.state.columns[0]} type="hidden" value={item.id_artiste}/>
-                                        {item.id_artiste}
-                                    </td>
-                                    <td>
-                                        {this.state.edition === item.id_artiste ?
-                                            <input className="input" name={this.state.columns[1]} type="text" defaultValue={item[this.state.columns[1]]}/> : (item[this.state.columns[1]])
-                                        }
-                                    </td>
-                                    <td>
-                                        {this.state.edition === item.id_artiste ?
-                                            <input className="input" name={this.state.columns[2]} type="url" defaultValue={item[this.state.columns[2]]}/> : (item[this.state.columns[2]])
-                                        }
-                                    </td>
-                                    <td><a onClick={() => this.delete('artistes', item.id_artiste)}>
+                        this.state.data.map((item, index) =>
+                            <tr key={index}>
+                                <td>
+                                    <input className="input" name={this.state.columns[0]} type="hidden"
+                                           value={item.id_artiste}/>
+                                    {item.id_artiste}
+                                </td>
+                                <td>
+                                    {this.state.edition === item.id_artiste ?
+                                        <input className="input" name={this.state.columns[1]} type="text"
+                                               defaultValue={item[this.state.columns[1]]}/> : (item[this.state.columns[1]])
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.edition === item.id_artiste ?
+                                        <input className="input" name={this.state.columns[2]} type="url"
+                                               defaultValue={item[this.state.columns[2]]}/> : (item[this.state.columns[2]])
+                                    }
+                                </td>
+                                <td><a onClick={() => this.delete('artistes', item.id_artiste)}>
                                         <span className="icon is-small">
                                             <i className="fas fa-trash-alt" aria-hidden="true"></i>
                                         </span>
-                                    </a>
-                                    {this.state.edition === parseInt(item.id_artiste) ? (
-                                        <a onClick={() => this.toggleEdition(0)}>
+                                </a>
+                                {/*<Edit editable={this.state.edition} id={item.id_artiste}/>*/}
+                                    {this.state.edition === item.id_artiste ? (
+                                        <button type="submit" data-id={item.id_artiste}>
                                             <span className="icon is-small">
                                                 <i className="fas fa-check" aria-hidden="true"></i>
                                             </span>
-                                        </a>
-                                        ) : (
+                                        </button>
+                                    ) : (
                                         <a onClick={() => this.toggleEdition(item.id_artiste)}>
                                             <span className="icon is-small">
                                                 <i className="fas fa-edit" aria-hidden="true"></i>
                                             </span>
                                         </a>
-                                        )}
-                                    </td>
-                                </tr>
-                            )
+                                    )}
+                                </td>
+                            </tr>
+                        )
                         }
                         {this.state.currentTab === 2 &&
-                            this.state.data.map((item, index) =>
-                                <tr key={index}>
+                        this.state.data.map((item, index) =>
+                            <tr key={index}>
+                                <td>
+                                    <input className="input" name={this.state.columns[0]} type="hidden"
+                                           value={item.id_titre}/>
+                                    {item.id_titre}
+                                </td>
+                                <td>
+                                    {this.state.edition === item.id_titre ?
+                                        <input className="input" name={this.state.columns[1]} type="text"
+                                               defaultValue={item[this.state.columns[1]]}/> : (item[this.state.columns[1]])
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.edition === item.id_titre ?
+                                        <input className="input" name={this.state.columns[2]} type="text"
+                                               defaultValue={item[this.state.columns[2]]}/> : (item[this.state.columns[2]])
+                                    }
+                                </td>
+                                {item[this.state.columns[3]] ? (
                                     <td>
-                                        <input className="input" name={this.state.columns[0]} type="hidden" value={item.id_titre}/>
-                                        {item.id_titre}
-                                    </td>
-                                    <td>
-                                        {this.state.edition === item.id_titre ?
-                                            <input className="input" name={this.state.columns[1]} type="text" defaultValue={item[this.state.columns[1]]}/> : (item[this.state.columns[1]])
-                                        }
-                                    </td>
-                                    <td>
-                                        {this.state.edition === item.id_titre ?
-                                            <input className="input" name={this.state.columns[2]} type="text" defaultValue={item[this.state.columns[2]]}/> : (item[this.state.columns[2]])
-                                        }
-                                    </td>
-                                    <td>
-                                        <input className="input" name="albumId" type="hidden" value={item[this.state.columns[3]].id_album}/>
+                                        <input className="input" name="albumId" type="hidden"
+                                               value={item[this.state.columns[3]].id_album}/>
                                         {item[this.state.columns[3]].nom}
                                     </td>
-                                    <td>
-                                        <a onClick={() => this.delete('artistes', item.id_titre)}>
+                                ) : (
+                                    <td>Null</td>
+                                )}
+                                <td>
+                                    <a onClick={() => this.delete('titres', item.id_titre)}>
                                             <span className="icon is-small">
                                                 <i className="fas fa-trash-alt" aria-hidden="true"></i>
                                             </span>
-                                        </a>
-                                        {this.state.edition === item.id_titre ? (
-                                            <a onClick={() => this.toggleEdition(0)}>
+                                    </a>
+                                    {this.state.edition === item.id_titre ? (
+                                        <button type="submit" data-id={item.id_titre}>
                                                 <span className="icon is-small">
                                                     <i className="fas fa-check" aria-hidden="true"></i>
                                                 </span>
-                                            </a>
-                                        ) : (
-                                            <a onClick={() => this.toggleEdition(item.id_titre)}>
+                                        </button>
+                                    ) : (
+                                        <a onClick={() => this.toggleEdition(item.id_titre)}>
                                                 <span className="icon is-small">
                                                     <i className="fas fa-edit" aria-hidden="true"></i>
                                                 </span>
-                                            </a>
-                                        )}
+                                        </a>
+                                    )}
+                                </td>
+                            </tr>
+                        )
+                        }
+                        {this.state.currentTab === 3 &&
+                        this.state.data.map((item, index) =>
+                            <tr key={index}>
+                                <td>
+                                    <input className="input" name={this.state.columns[0]} type="hidden"
+                                           value={item.id_album}/>
+                                    {item.id_album}
+                                </td>
+                                <td>
+                                    {this.state.edition === item.id_album ?
+                                        <input className="input" name={this.state.columns[1]} type="text"
+                                               defaultValue={item[this.state.columns[1]]}/> : (item[this.state.columns[1]])
+                                    }
+                                </td>
+                                <td>
+                                    {this.state.edition === item.id_album ?
+                                        <input className="input" name={this.state.columns[2]} type="text"
+                                               defaultValue={item[this.state.columns[2]]}/> : (item[this.state.columns[2]])
+                                    }
+                                </td>
+                                <td>
+                                    {item[this.state.columns[3]] &&
+                                    this.state.edition === item.id_album ?
+                                        <input className="input" name={this.state.columns[3]} type="text"
+                                               defaultValue={item[this.state.columns[3]]}/> : (
+                                            (item[this.state.columns[3]] !== undefined && !item[this.state.columns[3]].nom) && item[this.state.columns[3]]
+                                        )
+                                    }
+                                </td>
+                                {item[this.state.columns[4]] ? (
+                                    <td>
+                                        <input className="input" name="artisteId" type="hidden"
+                                               value={item[this.state.columns[4]].id_artiste}/>
+                                        {item[this.state.columns[4]].nom}
                                     </td>
-                                </tr>
-                            )
+                                ) : (
+                                    <td>Null</td>
+                                )}
+                                <td>
+                                    <a onClick={() => this.delete('albums', item.id_album)}>
+                                                <span className="icon is-small">
+                                                    <i className="fas fa-trash-alt" aria-hidden="true"></i>
+                                                </span>
+                                    </a>
+                                    {this.state.edition === item.id_album ? (
+                                        <button type="submit" data-id={item.id_album}>
+                                            <span className="icon is-small">
+                                                <i className="fas fa-check" aria-hidden="true"></i>
+                                            </span>
+                                        </button>
+                                    ) : (
+                                        <a onClick={() => this.toggleEdition(item.id_album)}>
+                                            <span className="icon is-small">
+                                                <i className="fas fa-edit" aria-hidden="true"></i>
+                                            </span>
+                                        </a>
+                                    )}
+                                </td>
+                            </tr>
+                        )
                         }
                         </tbody>
                     </table>
+                    }
                     </form>
                 </div>
                 <div className={this.state.modal_class + " modal modal_add" } >
