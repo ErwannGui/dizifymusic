@@ -2,6 +2,7 @@ import React from "react";
 import Table from "../components/tables";
 import TitleItem from "../components/titleItem";
 import {API_URL} from "../api";
+const $ = require("jquery");
 
 /*const Edit = (props) => {
     const { editable, id } = props;
@@ -24,7 +25,8 @@ class Admin extends React.Component {
             columns: [],
             data: [],
             modal_class: "",
-            isFetching: false
+            isFetching: false,
+            modal_title: "",
         }
         this.toggleEdition.bind(this);
     }
@@ -149,9 +151,58 @@ class Admin extends React.Component {
 
     isEditable() {
         setTimeout(() => {
-            console.log(this.state.edition);
+            // console.log(this.state.edition);
             return this.state.edition
         }, 300)
+    }
+
+    formatBody(e, type) {
+        let id = null;
+        let body = {};
+        let key = '';
+        switch(type) {
+            case 'artistes':
+                body = JSON.stringify({
+                    [e.target[1].name]: e.target[1].value,
+                    [e.target[2].name]: e.target[2].value
+                });
+                e.target[3].attributes[1] === 'data-id' ? id = e.target[3].attributes[1].value : id = null;
+                break;
+            case 'titres':
+                e.target[3].name === 'album' ? key = 'albumId' : key = '';
+                body = JSON.stringify({
+                    [e.target[1].name]: e.target[1].value,
+                    [e.target[2].name]: e.target[2].value,
+                    [key]: e.target[3].value
+                });
+                e.target[4].attributes[1] === 'data-id' ? id = e.target[4].attributes[1].value : id = null;
+                break;
+            case 'albums':
+                e.target[4].name === 'artiste' ? key = 'artisteId' : key = '';
+                body = JSON.stringify({
+                    [e.target[1].name]: e.target[1].value,
+                    [e.target[2].name]: e.target[2].value,
+                    [e.target[3].name]: e.target[3].value,
+                    [key]: e.target[4].value
+                });
+                e.target[5].attributes[1] === 'data-id' ? id = e.target[5].attributes[1].value : id = null;
+                break;
+        }
+        return [id, body];
+    }
+
+    refreshData(type) {
+        switch(type) {
+            case 'artistes':
+                this.getArtists();
+                break;
+            case 'titres':
+                this.getTitles();
+                break;
+            case 'albums':
+                this.getAlbums();
+                break;
+        }
     }
 
     delete(type, id) {
@@ -160,6 +211,7 @@ class Admin extends React.Component {
         })
             .then(response => {
                 console.log(response);
+                this.refreshData(type);
             })
             .catch(err => {
                 console.log(err);
@@ -169,58 +221,39 @@ class Admin extends React.Component {
     edit(e, type) {
         e.preventDefault();
         this.toggleEdition(0);
-        let id = null;
-        let body = {};
-        switch(type) {
-            case 'artistes':
-                body = JSON.stringify({
-                    [e.target[1].name]: e.target[1].value,
-                    [e.target[2].name]: e.target[2].value
-                });
-                id = e.target[3].attributes[1].value;
-                console.log(id);
-                break;
-            case 'titres':
-                body = JSON.stringify({
-                    [e.target[1].name]: e.target[1].value,
-                    [e.target[2].name]: e.target[2].value,
-                    [e.target[3].name]: e.target[3].value
-                });
-                id = e.target[4].attributes[1].value;
-                console.log(id);
-                break;
-            case 'albums':
-                body = JSON.stringify({
-                    [e.target[1].name]: e.target[1].value,
-                    [e.target[2].name]: e.target[2].value,
-                    [e.target[3].name]: e.target[3].value,
-                    [e.target[4].name]: e.target[4].value
-                });
-                id = e.target[5].attributes[1].value;
-                console.log(id);
-                break;
-        }
-        fetch(API_URL + type + `/${id}`, {
+        const params = this.formatBody(e, type);
+        fetch(API_URL + type + `/${params[0]}`, {
             "method": "PUT",
             "headers": {
                 "content-type": "application/json",
                 "accept": "application/json"
             },
-            "body": body
+            "body": params[1]
         })
             .then(response => {
                 console.log(response);
-                switch(type) {
-                    case 'artistes':
-                        this.getArtists();
-                        break;
-                    case 'titres':
-                        this.getTitles();
-                        break;
-                    case 'albums':
-                        this.getAlbums();
-                        break;
-                }
+                this.refreshData(type);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    create(e, type) {
+        e.preventDefault();
+        const params = this.formatBody(e, type);
+        fetch(API_URL + type, {
+            "method": "POST",
+            "headers": {
+                "content-type": "application/json",
+                "accept": "application/json"
+            },
+            "body": params[1]
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                this.refreshData(type);
             })
             .catch(err => {
                 console.log(err);
@@ -228,7 +261,24 @@ class Admin extends React.Component {
     }
 
     modal_add(){
+        let current_title
+
         this.setState({modal_class: "is-active"})
+        $('.ul_cat li.is-active').each(function() {
+            current_title = $(this).text()
+        });
+
+        this.setState({
+            modal_title:  current_title,
+        })
+
+        // clean input modal
+        $('.modal_add .content.modal_content').empty();
+
+        // add input modal
+        $.each(this.state.columns, function( index, value ) {
+            $('.modal_add .content.modal_content').append('<label class="label">'+value+'</label><input name=' +value+ ' id='+value+' class="input" type="text" placeholder='+value+'>')
+        });
     }
 
     modal_close() {
@@ -240,7 +290,7 @@ class Admin extends React.Component {
             <section className="admin">
                 <h1 className="has-text-white is-size-2">Interface Administrateur</h1>
                 <div className="tabs is-centered is-boxed is-toggle is-fullwidth">
-                    <ul>
+                    <ul className="ul_cat">
                         <li className={this.state.currentTab === 1 ? 'is-active' : ''} onClick={() => this.changeTab(1)}>
                             <a>
                                 <span className="icon is-small">
@@ -442,57 +492,21 @@ class Admin extends React.Component {
                 </div>
                 <div className={this.state.modal_class + " modal modal_add" } >
                     <div className="modal-card">
+                        <form onSubmit={($event) => this.create($event, this.state.type)}>
                         <header className="modal-card-head">
-                            <p className="modal-card-title">Modal title</p>
-                            <button className="delete" aria-label="close"  onClick={() => this.modal_close()}/>
+                            <p className="modal-card-title">{this.state.modal_title}</p>
+                            <a className="delete" aria-label="close"  onClick={() => this.modal_close()}></a>
                         </header>
                         <section className="modal-card-body">
-                            <div className="content">
-                                <h1>Hello World</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus
-                                    ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu
-                                    lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel,
-                                    interdum mattis neque.</p>
-                                <h2>Second level</h2>
-                                <p>Curabitur accumsan turpis pharetra <strong>augue tincidunt</strong> blandit. Quisque
-                                    condimentum maximus mi, sit amet commodo arcu rutrum id. Proin pretium urna vel
-                                    cursus venenatis. Suspendisse potenti. Etiam mattis sem rhoncus lacus dapibus
-                                    facilisis. Donec at dignissim dui. Ut et neque nisl.</p>
-                                <ul>
-                                    <li>In fermentum leo eu lectus mollis, quis dictum mi aliquet.</li>
-                                    <li>Morbi eu nulla lobortis, lobortis est in, fringilla felis.</li>
-                                    <li>Aliquam nec felis in sapien venenatis viverra fermentum nec lectus.</li>
-                                    <li>Ut non enim metus.</li>
-                                </ul>
-                                <h3>Third level</h3>
-                                <p>Quisque ante lacus, malesuada ac auctor vitae, congue <a href="#">non ante</a>.
-                                    Phasellus lacus ex, semper ac tortor nec, fringilla condimentum orci. Fusce eu
-                                    rutrum tellus.</p>
-                                <ol>
-                                    <li>Donec blandit a lorem id convallis.</li>
-                                    <li>Cras gravida arcu at diam gravida gravida.</li>
-                                    <li>Integer in volutpat libero.</li>
-                                    <li>Donec a diam tellus.</li>
-                                    <li>Aenean nec tortor orci.</li>
-                                    <li>Quisque aliquam cursus urna, non bibendum massa viverra eget.</li>
-                                    <li>Vivamus maximus ultricies pulvinar.</li>
-                                </ol>
-                                <blockquote>Ut venenatis, nisl scelerisque sollicitudin fermentum, quam libero hendrerit
-                                    ipsum, ut blandit est tellus sit amet turpis.
-                                </blockquote>
-                                <p>Quisque at semper enim, eu hendrerit odio. Etiam auctor nisl et <em>justo
-                                    sodales</em> elementum. Maecenas ultrices lacus quis neque consectetur, et lobortis
-                                    nisi molestie.</p>
-                                <p>Sed sagittis enim ac tortor maximus rutrum. Nulla facilisi. Donec mattis vulputate
-                                    risus in luctus. Maecenas vestibulum interdum commodo.</p>
-                                <p>Suspendisse egestas sapien non felis placerat elementum. Morbi tortor nisl, suscipit
-                                    sed mi sit amet, mollis malesuada nulla. Nulla facilisi. Nullam ac erat ante.</p>
-                            </div>
+                                <div className="content modal_content">
+
+                                </div>
                         </section>
                         <footer className="modal-card-foot">
-                            <button className="button is-success">Save changes</button>
+                            <button className="button is-link" type="submit">Save changes</button>
                             <button className="button" onClick={() => this.modal_close()}>Cancel</button>
                         </footer>
+                        </form>
                     </div>
                 </div>
                 <button className="button is-pulled-right is-link" onClick={() => this.modal_add()}>

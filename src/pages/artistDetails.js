@@ -87,23 +87,24 @@ class ArtistDetails extends React.Component {
                 favorites.addArtist(item);
                 break;
         }
-        fetch(API_URL + `favoris/${favorites.getId()}`, {
-            "method": "PUT",
-            "headers": {
-                "content-type": "application/json",
-                "accept": "application/json"
-            },
-            "body": {
-                "favorisIn": favorites.format()
-            }
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response);
+        setTimeout(() => {
+            console.log(JSON.stringify(favorites.format()));
+            fetch(API_URL + `favoris/${favorites.getId()}`, {
+                "method": "PUT",
+                "headers": {
+                    "content-type": "application/json",
+                    "accept": "application/json"
+                },
+                "body": JSON.stringify(favorites.format())
             })
-            .catch(err => {
-                console.log(err);
-            });
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }, 500)
     }
 
     render() {

@@ -17,23 +17,23 @@ export default class TitleItem extends React.Component {
 
     addToFavorites(item) {
         favorites.addTitle(item);
-        fetch(API_URL + `favoris/${favorites.getId()}`, {
-            "method": "PUT",
-            "headers": {
-                "content-type": "application/json",
-                "accept": "application/json"
-            },
-            "body": {
-                "favorisIn": favorites.format()
-            }
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log(response);
+        setTimeout(() => {
+            fetch(API_URL + `favoris/${favorites.getId()}`, {
+                "method": "PUT",
+                "headers": {
+                    "content-type": "application/json",
+                    "accept": "application/json"
+                },
+                "body": JSON.stringify(favorites.format())
             })
-            .catch(err => {
-                console.log(err);
-            });
+                .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }, 500);
     }
 
     render() {

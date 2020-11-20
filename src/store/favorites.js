@@ -8,26 +8,24 @@ export const favorites = {
         return this.favorites.id_favoris;
     },
     format() {
-        setTimeout(() => {
-            let albums = [];
-            let artists = [];
-            let songs = [];
-            this.favorites.albums.forEach((item) => {
-                albums.push(item.id_album);
-            });
-            this.favorites.artistes.forEach((item) => {
-                artists.push(item.id_artiste);
-            });
-            this.favorites.titres.forEach((item) => {
-                songs.push(item.id_titre);
-            });
-            return {
-                albumsIds: albums,
-                artisteIds: artists,
-                titresIds: songs,
-                utilisateurId: this.getId()
-            };
-        }, 300);
+        let albums = [];
+        let artists = [];
+        let songs = [];
+        this.favorites.albums.forEach((item) => {
+            albums.push(item.id_album);
+        });
+        this.favorites.artistes.forEach((item) => {
+            artists.push(item.id_artiste);
+        });
+        this.favorites.titres.forEach((item) => {
+            songs.push(item.id_titre);
+        });
+        return {
+            albumsIds: albums,
+            artisteIds: artists,
+            titresIds: songs,
+            utilisateurId: this.getId()
+        };
     },
     isFavoriteArtist(id) {
         setTimeout(() => {
