@@ -1,12 +1,10 @@
 /* A fake authentication function */
 export var fakeAuth = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     token: null,
     isConnected() {
-        setTimeout(() => {
-            console.log(this.isAuthenticated);
-            return this.isAuthenticated;
-        }, 300)
+        // console.log(this.isAuthenticated);
+        return this.isAuthenticated;
     },
     authenticate(token) {
         this.isAuthenticated = true;

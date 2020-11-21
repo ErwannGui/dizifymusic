@@ -59,7 +59,7 @@ class Login extends React.Component {
         if (fakeAuth.isAuthenticated) {
             console.log("Redirect" + fakeAuth.isAuthenticated);
             // Redirect qui fonctionne pas ?! Du coup je change comment de page ?
-            return (<Redirect to={'/admin'}/>)
+            return (<Redirect to={this.state.connected ? '/admin' : '/'}/>)
         }
 
         return (

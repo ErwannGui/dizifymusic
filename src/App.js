@@ -19,63 +19,92 @@ import Login from "./pages/login";
     return fakeAuth.isAuthenticated;
 }*/
 
-function App() {
-    const isConnected = fakeAuth.isAuthenticated;
-    console.log(isConnected); // ...
-    return (
-        <div className="App">
-            <Header/>
-            <aside className="menu">
-                <p className="menu-label">
-                    General
-                </p>
-                <ul className="menu-list">
-                    <li><Link to="/">Dashboard</Link></li>
-                    {isConnected &&
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isConnected: fakeAuth.isAuthenticated
+        };
+        console.log(this.state.isConnected); // ...
+        this.refresh(1000);
+    }
+
+    refresh(ms) {
+        setTimeout(() => {
+            console.log('Login ??? Not logging ... Login ??? Not logging ...');
+            if (fakeAuth.isConnected() !== this.state.isConnected) {
+                console.log('Connected !', fakeAuth.isConnected(), fakeAuth.isAuthenticated)
+                this.setState({
+                    isConnected: fakeAuth.isAuthenticated
+                });
+                this.forceUpdate();
+            } else {
+                // console.log(fakeAuth.isConnected(), fakeAuth.isAuthenticated)
+                this.refresh(ms);
+            }
+        }, ms)
+    }
+
+    render() {
+        const { isConnected } = this.state;
+
+        return (
+            <div className="App">
+                <Header/>
+                <aside className="menu">
+                    <p className="menu-label">
+                        General
+                    </p>
+                    <ul className="menu-list">
+                        <li><Link to="/">Dashboard</Link></li>
+                        {isConnected &&
                         <li><Link to="/playlist">Playlist</Link></li>
-                    }
-                    {isConnected &&
+                        }
+                        {isConnected &&
                         <li><Link to="/favorite">Favoris</Link></li>
-                    }
-                </ul>
-                <p className="menu-label">
-                    Administration
-                </p>
-                <ul className="menu-list">
-                    <li><Link to="/admin/users">Utilisateurs</Link></li>
-                    <li>
-                        <ul>
-                            <li><Link to="/admin/users">Liste des membres</Link></li>
-                            <li><Link to="/admin/users#addUser">Ajouter un utilisateur</Link></li>
-                        </ul>
-                    </li>
-                    <li><Link to="/admin">Données</Link></li>
-                    <li>
-                        <ul>
-                            <li><Link to="/admin/songs">Titres</Link></li>
-                            <li><Link to="/admin/artists">Artistes</Link></li>
-                            <li><Link to="/admin/albums">Albums</Link></li>
-                        </ul>
-                    </li>
-                </ul>
-            </aside>
-            <main className="section">
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/search" component={Search} />
-                    <Route path="/login" exact component={Login} />
-                    <Route path="/profile" exact component={Profile} />
-                    <Route path="/album/:id" exact component={AlbumDetails} />
-                    <Route path="/artist/:id" exact component={ArtistDetails} />
-                    <PrivateRoute
-                        path="/admin"
-                        component={Admin}
-                        isAuthenticated={isConnected}
-                    />
-                </Switch>
-            </main>
-        </div>
-    );
+                        }
+                    </ul>
+                    <p className="menu-label">
+                        Administration
+                    </p>
+                    <ul className="menu-list">
+                        <li><Link to="/admin/users">Utilisateurs</Link></li>
+                        <li>
+                            <ul>
+                                <li><Link to="/admin/users">Liste des membres</Link></li>
+                                <li><Link to="/admin/users#addUser">Ajouter un utilisateur</Link></li>
+                            </ul>
+                        </li>
+                        <li><Link to="/admin">Données</Link></li>
+                        <li>
+                            <ul>
+                                <li><Link to="/admin/songs">Titres</Link></li>
+                                <li><Link to="/admin/artists">Artistes</Link></li>
+                                <li><Link to="/admin/albums">Albums</Link></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                <main className="section">
+                    <Switch>
+                        <Route path="/" exact component={Home} />
+                        <Route path="/search" component={Search} />
+                        <Route path="/login" exact component={Login} />
+                        <Route path="/profile" exact component={Profile} />
+                        <Route path="/album/:id" exact component={AlbumDetails} />
+                        <Route path="/artist/:id" exact component={ArtistDetails} />
+                        <PrivateRoute
+                            path="/admin"
+                            component={Admin}
+                            isAuthenticated={this.state.isConnected}
+                        />
+                    </Switch>
+                </main>
+            </div>
+        );
+    }
+
 }
 
 export default App;
