@@ -33,6 +33,16 @@ class Admin extends React.Component {
 
     async componentDidMount() {
         await this.getArtists();
+        switch(this.props.location.pathname) {
+            case '/admin/songs':
+                this.changeTab(2);
+                break;
+            case '/admin/albums':
+                this.changeTab(3);
+                break;
+            default:
+                break;
+        }
     }
 
     changeTab(index) {

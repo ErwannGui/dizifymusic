@@ -1,13 +1,15 @@
+import {API_URL} from "../api";
+
 export const favorites = {
     favorites: {},
     setFavorites(fav) {
         console.log(fav);
-        this.favorites = fav[0];
+        this.favorites = Array.isArray(fav) ? fav[0] : fav;
     },
     getId() {
-        return this.favorites.id_favoris;
+        return this.favorites.utilisateur ? this.favorites.utilisateur.id_utilisateur : null;
     },
-    format() {
+    format(id) {
         let albums = [];
         let artists = [];
         let songs = [];
@@ -24,32 +26,27 @@ export const favorites = {
             albumsIds: albums,
             artisteIds: artists,
             titresIds: songs,
-            utilisateurId: this.getId()
+            utilisateurId: id || this.getId()
         };
     },
     isFavoriteArtist(id) {
-        setTimeout(() => {
-            if (this.favorites.artistes) {
-                let res = this.favorites.artistes.filter((item) => { return item.id_artiste === id; });
-                return res.length > 0;
-            } return false;
-        }, 300);
+        if (this.favorites.artistes) {
+            let res = this.favorites.artistes.filter((item) => { return item.id_artiste === id; });
+            // console.log(id, this.favorites.artistes, 'Is faroris : ', res);
+            return res.length > 0 ? res[0].id_artiste : [];
+        } return [];
     },
     isFavoriteAlbum(id) {
-        setTimeout(() => {
-            if (this.favorites.albums) {
-                let res = this.favorites.albums.filter((item) => { return item.id_album === id; });
-                return res.length > 0;
-            } return false;
-        }, 300);
+        if (this.favorites.albums) {
+            let res = this.favorites.albums.filter((item) => { return item.id_album === id; });
+            return res.length > 0 ? res[0].id_album : [];
+        } return [];
     },
     isFavoriteTitle(id) {
-        setTimeout(() => {
-            if (this.favorites.titres) {
-                let res = this.favorites.titres.filter((item) => { return item.id_titre === id; });
-                return res.length > 0;
-            } return false;
-        }, 300);
+        if (this.favorites.titres) {
+            let res = this.favorites.titres.filter((item) => { return item.id_titre === id; });
+            return res.length > 0 ? res[0].id_titre : [];
+        } return [];
     },
     addAlbum(item) {
         setTimeout(() => {
@@ -66,4 +63,22 @@ export const favorites = {
             this.favorites.artistes.push(item);
         }, 300)
     },
+    createDefault(id) {
+        const body = JSON.stringify(this.format(id));
+        fetch(API_URL + 'favoris', {
+            "method": "POST",
+            "headers": {
+                "content-type": "application/json",
+                "accept": "application/json"
+            },
+            "body": body
+        })
+            .then(response => response.json())
+            .then(response => {
+                this.setFavorites(response);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
 };

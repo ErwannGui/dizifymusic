@@ -14,6 +14,8 @@ import Search from "./pages/search";
 import ArtistDetails from "./pages/artistDetails";
 import AlbumDetails from "./pages/albumDetails";
 import Login from "./pages/login";
+import Playlist from "./pages/playlists";
+import PlaylistDetails from "./pages/playlistDetails";
 
 /*function isConnected() {
     return fakeAuth.isAuthenticated;
@@ -27,7 +29,8 @@ class App extends React.Component {
             isConnected: fakeAuth.isAuthenticated
         };
         console.log(this.state.isConnected); // ...
-        this.refresh(1000);
+        if (!fakeAuth.isAuthenticated)
+            this.refresh(1000);
     }
 
     refresh(ms) {
@@ -69,14 +72,14 @@ class App extends React.Component {
                         Administration
                     </p>
                     <ul className="menu-list">
-                        <li><Link to="/admin/users">Utilisateurs</Link></li>
+                        {/*<li><Link to="/admin/users">Utilisateurs</Link></li>
                         <li>
                             <ul>
                                 <li><Link to="/admin/users">Liste des membres</Link></li>
                                 <li><Link to="/admin/users#addUser">Ajouter un utilisateur</Link></li>
                             </ul>
                         </li>
-                        <li><Link to="/admin">Données</Link></li>
+                        <li><Link to="/admin">Données</Link></li>*/}
                         <li>
                             <ul>
                                 <li><Link to="/admin/songs">Titres</Link></li>
@@ -94,6 +97,12 @@ class App extends React.Component {
                         <Route path="/profile" exact component={Profile} />
                         <Route path="/album/:id" exact component={AlbumDetails} />
                         <Route path="/artist/:id" exact component={ArtistDetails} />
+                        <Route path="/playlist/:id" exact component={PlaylistDetails} />
+                        <PrivateRoute
+                            path="/playlist"
+                            component={Playlist}
+                            isAuthenticated={this.state.isConnected}
+                        />
                         <PrivateRoute
                             path="/admin"
                             component={Admin}

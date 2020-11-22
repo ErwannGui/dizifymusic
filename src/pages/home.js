@@ -69,7 +69,13 @@ class Home extends React.Component {
         })
             .then(response => response.json())
             .then(response => {
-                favorites.setFavorites(response);
+                for (let i = 0; i < response.length; i++) {
+                    if (fakeAuth.id === response[i].utilisateur.id_utilisateur)
+                        favorites.setFavorites(response[i]);
+                }
+                if (favorites.getId() === null) {
+                    favorites.createDefault(fakeAuth.id);
+                }
             })
             .catch(err => {
                 console.log(err);

@@ -44,7 +44,7 @@ class Login extends React.Component {
             .then(response => response.json())
             .then(response => {
                 console.log(response)
-                fakeAuth.authenticate(response.token);
+                fakeAuth.authenticate(response);
                 // this.connect();
             })
             .catch(err => {
@@ -58,7 +58,6 @@ class Login extends React.Component {
 
         if (fakeAuth.isAuthenticated) {
             console.log("Redirect" + fakeAuth.isAuthenticated);
-            // Redirect qui fonctionne pas ?! Du coup je change comment de page ?
             return (<Redirect to={this.state.connected ? '/admin' : '/'}/>)
         }
 

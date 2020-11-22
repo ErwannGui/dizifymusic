@@ -100,6 +100,7 @@ class ArtistDetails extends React.Component {
                 .then(response => response.json())
                 .then(response => {
                     console.log(response);
+                    this.forceUpdate();
                 })
                 .catch(err => {
                     console.log(err);
@@ -114,7 +115,7 @@ class ArtistDetails extends React.Component {
                     {this.state.artistData.nom}
                     {this.isConnected() &&
                     <span className="icon is-small" onClick={() => this.addToFavorites('artist', this.state.artistData)}>
-                        <i className={favorites.isFavoriteArtist(this.state.artistData.id_artiste) ? 'fas fa-bookmark' : 'far fa-bookmark'}/>
+                        <i className={favorites.isFavoriteArtist(this.state.artistData.id_artiste) === this.state.artistData.id_artiste ? 'fas fa-bookmark' : 'far fa-bookmark'}/>
                     </span>
                     }
                 </p>
@@ -137,7 +138,7 @@ class ArtistDetails extends React.Component {
                                         <div className="media-content">
                                             {this.isConnected() &&
                                             <span className="icon is-small" onClick={() => this.addToFavorites('album', item)}>
-                                                <i className={favorites.isFavoriteAlbum(item.id_album) ? 'fas fa-bookmark' : 'far fa-bookmark'}/>
+                                                <i className={favorites.isFavoriteAlbum(item.id_album) === item.id_album ? 'fas fa-bookmark' : 'far fa-bookmark'}/>
                                             </span>
                                             }
                                             <p className="title is-4">{item.nom}</p>
